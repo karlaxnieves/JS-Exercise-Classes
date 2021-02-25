@@ -85,12 +85,19 @@ class Car {
   }
 
   fill(gallons) {
-    this.tank += gallons;
+    this.tank = this.tank + gallons;
   }
 
   drive(distance) {
-    this.odometer += distance;
-
+    const driveableMiles = this.tank * this.milesPerGallon;
+    if (distance <= driveableMiles) {
+      this.odometer += distance;
+      this.tank = this.tank - (distance / this.milesPerGallon)
+    } else {
+      this.odometer = this.odometer + driveableMiles;
+      this.tank = 0;
+      return `I ran out of fuled at ${this.odometer} miles!`
+    }
   }
 }
 
@@ -131,8 +138,21 @@ class Lambdasian {
         + `demo` receives a `subject` string as an argument and returns the phrase 'Today we are learning about {subject}' where subject is the param passed in.
         + `grade` receives a `student` object and a `subject` string as arguments and returns '{student.name} receives a perfect score on {subject}'
 */
-class Instructor {
+class Instructor extends Lambdasian {
+  constructor(features) {
+    super(features)
+    this.specialty = features.specialty;
+    this.favLanguage = features.favLanguage;
+    this.catchPhrase = features.catchPhrase;
+  }
 
+  demo(subject) {
+    return `Today we are learning about ${subject}`;
+  }
+
+  grade(student, subject) {
+    return `${student.name} receives a perfect score on ${subject}`
+  }
 }
 /*
   TASK 5
@@ -149,8 +169,25 @@ class Instructor {
         + `PRAssignment` a method that receives a subject as an argument and returns `student.name has submitted a PR for {subject}`
         + `sprintChallenge` similar to PRAssignment but returns `student.name has begun sprint challenge on {subject}`
 */
-class Student {
+class Student extends Lambdasian {
+  constructor(features) {
+    super(features);
+    this.previousBackground = features.previousBackground;
+    this.className = features.className;
+    this.favSubjects = features.favSubjects;
+  }
 
+  listSubjects() {
+    return `Loving ${this.favSubjects}`
+  }
+
+  PRAssignment(subject) {
+    return `${this.name} has submitted a PR for ${subject}`
+  }
+
+  sprintChallenge(subject) {
+    return `${this.name} has begun sprint challenge on ${subject}`
+  }
 }
 
 /*
@@ -166,8 +203,20 @@ class Student {
         + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standy times!`
         + `debugsCode` a method that takes in a student object and a subject and returns `{name} debugs {student.name}'s code on {subject}`
 */
-class ProjectManager {
+class ProjectManager extends Instructor {
+  constructor(features) {
+    super(features);
+    this.gradClassName = features.gradClassName;
+    this.favInstructor = features.favInstructor;
+  }
 
+  standUp(channel) {
+    return `${this.name} announces to ${channel}, @channel standy times!`
+  }
+
+  debugsCode(student, subject) {
+    return `${this.name} debugs ${student.name}'s code on ${subject}`
+  }
 }
 /*
   STRETCH PROBLEM (no tests!)
